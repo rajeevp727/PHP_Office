@@ -1,0 +1,5 @@
+This is a simple ticketing system wherein a user has to login using his/her own unique username.
+After login, a session on the user's name is craeted. The user can create a ticket and edit it.
+Only th admin has access to both edit and delete the ticket.
+Once you logout, the user's session is destroyed.
+Took almost 7 days to complete the final product.
