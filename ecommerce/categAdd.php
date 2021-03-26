@@ -10,8 +10,8 @@ include "DB_Connect.php";
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(!empty($_POST['categName']) || !empty($_POST['categDesc'])){
-        $categName = $_POST['categName'];
-        $categDesc = $_POST['categDesc'];
+        $categName = trim($_POST['categName']);
+        $categDesc = trim($_POST['categDesc']);
     }else{ echo "<script>alert('Fields cannot be empty');</script>"; }
     if(isset($_POST['categAdd'])){
         try{

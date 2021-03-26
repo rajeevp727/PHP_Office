@@ -29,7 +29,7 @@ if(isset($_POST['btnLogout'])){
 <h1><marquee direction="left">User <?php echo $_SESSION['user']; ?> Homepage</marquee></h1>
   <div class="container">
     <div class="row">
-      <div name="categories" style="float:left; width:40%;">
+      <div name="categories" style="float:left; width:50%;">
         <h1>Categories</h1>
           <table border=1px style="border-collapsed:collapsed;">
             <tr>
@@ -67,7 +67,7 @@ if(isset($_POST['btnLogout'])){
             ?>
           </table>  
       </div>
-      <div name="products" style="float:right; width:60%">
+      <div name="products" style="float:right; width:50%">
           <h1 >Products</h1>
             <table border=1px style="border-collapsed:collapsed;">
               <tr>

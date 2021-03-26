@@ -1,3 +1,7 @@
+
+<?php
+ if (session_status() !== PHP_SESSION_ACTIVE) {    session_start();   }
+?>
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -150,6 +154,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$stmnt_reg->execute();
 			echo "<script>alert('Data Successfully inserted');</script>";
 
+
+			// Store data in session
+			$_SESSION['fName'] = $fName;
+			$_SESSION['lName'] = $lName;
+			$_SESSION['email'] = $email;
+			$_SESSION['userName'] = $userName;
+			$_SESSION['pass'] = $pass;
+			$_SESSION['confPass'] = $confPass;
+			
 			header("location: Login.php");
 			}
 		}catch(PDOException $e){ echo "error".$e->getMessage();}
