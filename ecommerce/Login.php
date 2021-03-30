@@ -19,23 +19,29 @@ include "DB_Connect.php";
 $userName = $password = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-	if(!empty($_POST['userName'])){$fname = $_POST['userName'];}
+	if(!empty($_POST['userName'])){$userName = $_POST['userName'];}
 	else{ "<script>alert('User Name field cannot be left blank');</script>"; }
 	if(!empty($_POST['password'])){$password = $_POST['userName'];}
 	else{ "<script>alert('Password field cannot be left blank');</script>"; }
-?>
 
-
-
-<?php
 	if(isset($_POST['btnLogin'])){
-		try{
-			$stmnt_login = $conn->prepare("SELECT * from users WHERE fName=:fname and password=:pass");
-			$stmnt_login->execute([":fname"=>$fname, ":pass"=>$password]);
-			echo "<script>alert('Login SUccessful');</script>";
-			$_SESSION['user']  = $fname;
+		// try{
+			$stmnt_login = $conn->prepare("SELECT * from users WHERE userName=:userName and password=:pass");
+			$stmnt_login->bindParam(":userName", $userName);
+			$stmnt_login->bindParam(":pass", $password);
+			$stmnt_login->execute();
+			$countUsers = $stmnt_login->rowCount();
+			if($countUsers > 1 || $countUsers= 1){
+			try{
+			$stmnt_users = $conn->prepare("SELECT * FROM users where userName=:userName");
+			$stmnt_users->execute([":userName"=>$userName]);
 			header("location: Profile.php");
+			while($rows = $stmnt_users->fetch(PDO::FETCH_ASSOC)){
+				$_SESSION['user']  = $userName;
+			}	
 		}catch(PDOException $e){ echo "error: ".$e->getMessage(); }
+		} else{ echo "<script>alert('Could not fetch records, Try again');</script>"; }
+		// 
 	}
 }
 ?>
@@ -48,7 +54,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <input type="text" class="form-control" name="userName" placeholder="Enter your username" required autofocus>
         </div>
 		<div class="form-group">
-            <input type="password" class="form-control" name="password" placeholder="Enter your Password" required>
+            <input type="password" class="form-control" name="password" id="pass" placeholder="Enter your Password" required>
         </div>
 		<div class="form-group">
             <button type="submit" class="btn btn-success btn-lg btn-block" name="btnLogin">Login</button>
@@ -56,5 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </form>
 	<div class="text-center">Don't have an account? <a href="Registration.php">Register here</a></div>
 </div>
-
+<script>
+$()
+</script>
 </body></html>

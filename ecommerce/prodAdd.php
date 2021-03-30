@@ -6,6 +6,7 @@
     <title>Add Products</title>
 </head>
 <body>
+<?php if(isset($_SESSION['user'])){  ?>
 <h1><marquee direction="right">Create a new product</marquee></h1>
 <?php
 include "DB_Connect.php";
@@ -43,5 +44,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </div>
     </form>
 </div>  
+<?php }else{ echo "Invalid Session, try <a href=Login.php>logging in</a> here "; } ?>
 </body>
 </html>

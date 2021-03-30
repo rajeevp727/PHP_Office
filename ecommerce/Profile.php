@@ -68,20 +68,22 @@ p, li, li a {
 
 <body>
 <?php 
+if(isset($_SESSION['user'])){
 $fname = $lname = $email = $userName = $pass = $confPass = "";
-
-
-
-
-
-
-
-
-
-
-
+if(isset($_POST['editProfile'])){  
+    header("location: editUserProfile.php");    
+}
+if(isset($_POST["btnLogout"])){  
+    // session_unset();  
+    // session_destroy();  
+    header("location: Logout.php");  
+}
+if(isset($_POST["btnCategories"])){  
+    header("location: homePage.php");  
+}
 ?>
 <h1><marquee direction="left"><strong>Welcome User: </strong><?php echo " ".$_SESSION['user']; ?></marquee></h1>
+<form action="" method="post">
 <div class="container bootstrap snippets bootdey">
   <div class="profile card">
      <div class="profile-body">
@@ -90,13 +92,11 @@ $fname = $lname = $email = $userName = $pass = $confPass = "";
            <div class="col-md-2 text-center">
                <img class="img-thumbnail md-margin-bottom-10" src="https://bootdey.com/img/Content/user-453533-fdadfd.png">
                <input type="submit" value="Edit Profile" name="editProfile" style="background-color:#66ff99; width:100%;">
-               <?php    if(isset($_POST['editProfile'])){  header("location: editUserProfile.php");    }    ?>
            </div>
            <div class="col-md-10">
               <span><strong>User Name:</strong><?php echo " ".$_SESSION['user']; ?></span>
               <span style="float:right">
                 <input type="submit" value="Logout" name="btnLogout" style="background-color:#66ff99;">
-                <?php if(isset($_POST["btnLogout"])){  session_unset();  session_destroy();  header("location: Logout.php");  }  ?>
               </span>
               <hr>
               <?php
@@ -112,16 +112,15 @@ $fname = $lname = $email = $userName = $pass = $confPass = "";
                   $pass= $rows['password'];
                   $confPass= $rows['confirmPassword']; 
               }
-              } 
+              }
               ?>
 
-              <form action="" method="POST">
                 <div>
                 <h2>User Details::</h2>
                 </div>
                 <div>
                     <table border=1px style="border-collapse: collapse; width: 100%;">
-                    <tr><td>First Name</td><td><?php echo $fname; ?></td></tr>
+                    <tr><td style="width:50%;">First Name</td><td><?php echo $fname; ?></td></tr>
                     <tr><td>Last Name</td><td><?php echo $lname; ?></td></tr>
                     <tr><td>Email</td><td><?php echo $email; ?></td></tr>
                     <tr><td>User Name</td><td><?php echo $userName; ?></td></tr>
@@ -135,12 +134,12 @@ $fname = $lname = $email = $userName = $pass = $confPass = "";
          </div>
        <div>
         <input type="submit" value="View Categories & Products" name="btnCategories" style="width:100%; background-color:#66ff99;">
-        <?php if(isset($_POST["btnCategories"])){  header("location: homepage.php");  } ?>
        </div>                
      </div>
    </div>
  </div>
 </div>
 </form>
+<?php }else{ echo "Invalid Session, try <a href=Login.php>logging in</a> here "; } ?>
 </body>
 </html>

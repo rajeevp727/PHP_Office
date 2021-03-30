@@ -8,8 +8,8 @@
 <body>
 <h1><marquee>Create a new Category</marquee></h1>
 <?php
+if(isset($_SESSION['user'])) {
 include "DB_Connect.php";
-
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(!empty($_POST['categName']) || !empty($_POST['categDesc'])){
         $categName = trim($_POST['categName']);
@@ -41,5 +41,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </form>
 </div>
 
+<?php }else{ echo "Invalid Session, try <a href=Login.php>logging in</a> here "; } ?>
 </body>
 </html>

@@ -7,6 +7,7 @@
 </head>
 <body>
 <?php
+if(isset($_SESSION['user'])){
 include "DB_Connect.php";
 $id = $prodDesc = $prodName = $prodPrice = "";
 // if(isset($_POST['btnCategUpdate'])){
@@ -52,6 +53,6 @@ if(isset($_POST['id'])){
         </div>
     </form>
 </div>  
-
+<?php }else{ echo "Invalid Session, try <a href=Login.php>logging in</a> here "; } ?>
 </body>
 </html>

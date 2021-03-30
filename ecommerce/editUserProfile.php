@@ -5,7 +5,7 @@ include "DB_Connect.php";
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Edit User Profile - <?php echo $_SESSION['user']; ?></title>
+    <title>Edit User Profile - "<?php echo $_SESSION['user']; ?>"</title>
     <style>
     input{
         width: 100%;
@@ -13,12 +13,12 @@ include "DB_Connect.php";
     body {
 	background: #63738a;
 	font-family: 'Roboto', sans-serif;
-}   
+}
     </style>
 </head>
 <body>
-<h1>User <i><?php if(isset($_SESSION['user'])){ echo $_SESSION['user']; }
-            else{ echo "Invalid session, try <a href='Login.php'>logging in</a>"; exit(); } ?> Session Profile</h1>
+<?php if(isset($_SESSION['user'])){ ?>
+<h1>User <i>"<?php echo $_SESSION['user']; ?>" Profile</h1>
     <?php
      $sql_getUsers = $conn->prepare("SELECT * from users where fName=:fname");
      $sql_getUsers->execute([":fname"=>$_SESSION['user']]);
@@ -34,7 +34,7 @@ include "DB_Connect.php";
     <form action="" method="post">
     <div>
     <table border=1px style="border-collapse: collapse; width:100%;">
-    <tr><td>First Name</td><td><input type="text" value=<?php echo $fname; ?>></td></tr>
+    <tr><td style="width:50%;">First Name</td><td><input type="text" value=<?php echo $fname; ?>></td></tr>
     <tr><td>Last Name</td><td><input type="text" value=<?php echo $lname; ?>></td></tr>
     <tr><td>Email</td><td><input type="text" value=<?php echo $email; ?>></td></tr>
     <tr><td>User Name</td><td><input type="text" value=<?php echo $userName; ?>></td></tr>
@@ -42,8 +42,8 @@ include "DB_Connect.php";
     <tr><td>Confirm Password</td><td><input type="password" value=<?php echo $confPass; ?>></td></tr>
 </table> <br>
     </div>
-    <input type="submit" value="Save Edit" name="btnSaveEdit" style="background-color:#66ff99; width:49%; float:left;">
-    <input type="submit" value="Cancel Edit" name="btnCancelEdit" style="background-color:#ed736b; width:49%; float:right;">
+    <input type="submit" value="Save Edit" name="btnSaveEdit" style="background-color:#66ff99; width:49%; float:left;cursor:pointer;">
+    <input type="submit" value="Cancel Edit" name="btnCancelEdit" style="background-color:#ed736b; width:49%; float:right;cursor:pointer;">
     </form>
     
     <?php
@@ -67,5 +67,6 @@ include "DB_Connect.php";
         header("location: Profile.php");
     }
     ?>
+<?php }else{ echo "Invalid Session, try <a href=Login.php>logging in</a> here "; } ?>  
 </body>
 </html>
