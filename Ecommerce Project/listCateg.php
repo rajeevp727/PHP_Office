@@ -12,6 +12,11 @@
     <link rel="stylesheet" href="app.css">
     <link href="app.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
 </head>
 
 <!DOCTYPE html>
@@ -23,7 +28,7 @@
 		<nav id="sidebar" class="sidebar">
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="Dashboard.php">
-          			<span class="align-middle">Ecommerce Demo</span>
+          			<span class="align-middle">Ecommerce Project</span>
         		</a>
 				<ul class="sidebar-nav">
 					<li class="sidebar-header">
@@ -112,15 +117,16 @@ if($_SERVER["REQUEST_METHOD"] =="POST"){
                             echo "<a class=add href=addCateg.php style=font-size:16px; background-color:green;>Add Category</a>"; 
                             }  ?>
 
-                        <table style="width:100%">
-                        <tr>
-                        <th>ID</th>
-                        <th>Category Name</th>
-                        <th>Category Description</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                        </tr>
-
+                        <table id="tblProd1" class="table table-striped table-bordered" style="width:100%">
+                        <thead>    
+                            <tr>
+                                <th>ID</th>
+                                <th>Category Name</th>
+                                <th>Category Description</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
                         <?php
                         $countCategRows=0;
                         $stmnt_categ = $conn->prepare("SELECT * FROM categories order by id DESC");
@@ -129,12 +135,13 @@ if($_SERVER["REQUEST_METHOD"] =="POST"){
                         while($rows=$stmnt_categ->fetch(PDO::FETCH_ASSOC)){
                         $countCategRows = count($rows);
                         if($countCategRows>=1){
-                            echo "<tr></tr>".
-                                "<td>".$i."</td>".
-                                "<td>".$rows['categName']."</td>".
-                                "<td>".$rows['categDesc']."</td>".
-                                "<td><a class=edit href=editCateg.php?id=$rows[id] style=background-color: cyan;>Edit Category</a></td>".
-                                "<td><a class=delete href=deleteCateg.php?id=$rows[id] style=background-color: red;>Delete Category</a></td>";
+                            echo "<tbody><tr>".
+                                 "<td>".$i."</td>".
+                                 "<td>".$rows['categName']."</td>".
+                                 "<td>".$rows['categDesc']."</td>".
+                                 "<td><a class=edit href=editCateg.php?id=$rows[id] style=background-color: cyan;>Edit Category</a></td>".
+                                 "<td><a class=delete href=deleteCateg.php?id=$rows[id] style=background-color: red;>Delete Category</a></td></tr>".
+                                 "</tbody>";
                         }
                         $i++;
                         }
@@ -180,6 +187,12 @@ if($_SERVER["REQUEST_METHOD"] =="POST"){
 </div>
 
 <script src="app.js"></script>
+
+<script>
+$(document).ready(function(){
+    $('#tblProd1').DataTable();
+});
+</script>
 
 </body>
 </html>

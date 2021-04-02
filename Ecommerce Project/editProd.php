@@ -17,6 +17,8 @@
 <!DOCTYPE html>
 <body>
 <?php
+if(isset($_GET['id'])){
+
 $id = $ProdDesc = $ProdName = $ProdPrice = "";
 include "DB_Connect.php";
 $sql_prodEdit = $conn->prepare("SELECT * FROM products where id=:id");
@@ -29,7 +31,7 @@ while($rows= $sql_prodEdit->fetch(PDO::FETCH_ASSOC)){
 }
 if(isset($_POST['btnEditProd'])){ echo 0;
 if(isset($_POST['id'])){ echo 1;
-    $stmnt_ProdUpdate = $conn->prepare("UPDATE products SET prodName=:pName, prodDesc=:pDesc, prodPrice=pPrice WHERE id=:id");
+    $stmnt_ProdUpdate = $conn->prepare("UPDATE products SET prodName=:pName, prodDesc=:pDesc, prodPrice=:pPrice WHERE id=:id");
     $stmnt_ProdUpdate->bindParam(":id", $_POST['id']);
     $stmnt_ProdUpdate->bindParam(":pName", $_POST['prodName']);
     $stmnt_ProdUpdate->bindParam(":pDesc", $_POST['prodDesc']);
@@ -81,6 +83,10 @@ if(isset($_POST['btnCancel'])){     header("location: listProd.php");      }
         </div>
     </div>
 </main>
+<?php
+} else{ echo "<script>alert('ID cannot be empty');</script>"; 
+    echo "Try <a href=Login.php> Logging in</a> agian"; }
+?>
 <script src="app.js"></script>    
 
 <footer class="footer" style="position:absolute; bottom:0px; width:77%;">

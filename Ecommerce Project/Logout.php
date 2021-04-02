@@ -20,7 +20,7 @@
 		<nav id="sidebar" class="sidebar">
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="Dashboard.php">
-          			<span class="align-middle">Ecommerce Demo</span>
+          			<span class="align-middle">Ecommerce project</span>
         		</a>
 				<ul class="sidebar-nav">
 					<li class="sidebar-header">
@@ -73,7 +73,7 @@
 						<?php 
 						if(isset($_SESSION['user'])){ echo "User: ";?> 
 						"<strong> <?php echo $_SESSION['user']; ?></strong>" Logged Out </h3>
-						<?php }else{  echo "Invalid User Session, Try login again"; }
+						<?php }else{  echo "Invalid User Session, Try <a href=Login.php>logging in</a> again"; }
 						session_destroy();
 						session_unset();
 						?>

@@ -16,12 +16,11 @@
 
 <!DOCTYPE html>
 <body>
-	<?php print_r($_SESSION); ?>
     <div class="wrapper">
 		<nav id="sidebar" class="sidebar">
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="Dashboard.php">
-          			<span class="align-middle">Ecommerce Demo</span>
+          			<span class="align-middle">Ecommerce project</span>
         		</a>
 				<ul class="sidebar-nav">
 					<li class="sidebar-header">
@@ -35,11 +34,11 @@
 
 					<li class="sidebar-item">
 						<a href="#Prod" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="grid"></i> <span class="align-middle">Products</span>
+							<i class="align-middle" data-feather="grid"></i> <span class="align-middle">Categories</span>
 						</a>
 						<ul id="Prod" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" href="addProd.php">Add Products</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="editProd.php">Edit Products</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="addCateg.php">Add Categories</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="editcateg.php">List Categories</a></li>
 						</ul>
 					</li>
 					
@@ -49,7 +48,7 @@
 						</a>
 						<ul id="prod" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
 							<li class="sidebar-item"><a class="sidebar-link" href="addProd.php">Add Products</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="editProd.php">Edit Products</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="listProd.php">List Products</a></li>
 						</ul>
 					</li>
 
@@ -78,11 +77,11 @@ if($_SERVER["REQUEST_METHOD"] =="POST"){
         if(!empty($_POST['ProdName']) || !empty($_POST['ProdDesc'])){
             $ProdName = trim($_POST['ProdName']);
             $ProdDesc = trim($_POST['ProdDesc']);
+            $prodPrice = $_POST['ProdPrice'];
         if(isset($_POST['btnAddProd'])){
             try{
-            $sql_Prod_add = $conn->prepare("INSERT INTO `Products`(`ProdName`, `ProdDesc`) VALUES (:Prodname, :ProdDesc)");
-            $sql_Prod_add->execute([":Prodname"=>$ProdName, ":ProdDesc"=>$ProdDesc]);
-            echo "<script>alert('New Product created');</script>";
+            $sql_Prod_add = $conn->prepare("INSERT INTO `Products`(`ProdName`, `ProdDesc`, `prodPrice`) VALUES (:Prodname, :ProdDesc, :prodPrice)");
+            $sql_Prod_add->execute([":Prodname"=>$ProdName, ":ProdDesc"=>$ProdDesc, ":prodPrice"=>$prodPrice]);
             }catch(PDOException $e){ echo "error".$e->getMessage(); }
     
             header("location: listProd.php");
@@ -113,10 +112,10 @@ if($_SERVER["REQUEST_METHOD"] =="POST"){
                                             <input class="form-control form-control-lg" type="text" name="ProdName" placeholder="Name your Product" autofocus>
                                         </div>
                                         <div class="mb-3">
-                                            <input class="form-control form-control-lg" type="text" name="ProdDesc" placeholder="Describe your Product"/>
+                                            <textarea name="ProdDesc" style="width:100%;" rows="5" placeholder="Describe your Product"></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <input class="form-control form-control-lg" type="number" name="ProdPrice" placeholder="Price your Product"/>
+                                            <input class="form-control form-control-lg" type="number" name="ProdPrice" placeholder="Price"/>
                                         </div>
                                         <div class="text-center mt-3">
                                             <button type="submit" class="btn btn-lg btn-primary" name=btnAddProd>Add Product</button>

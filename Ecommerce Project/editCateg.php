@@ -18,6 +18,7 @@
 <body>
 <?php
 $conn= mysqli_connect("localhost", 'root', '', 'ecommerce');
+if(isset($_GET['id'])){
 $id = $_GET['id'];
 
 $getCategory = mysqli_query($conn, "select * from categories where id = $id");
@@ -37,9 +38,8 @@ if(isset($_POST['btnEditCateg'])){
     if($upate){
         header("location: listCateg.php");
     }
-
-
 }
+
 
 ?>
 <main class="d-flex w-100">
@@ -77,6 +77,10 @@ if(isset($_POST['btnEditCateg'])){
         </div>
     </div>
 </main>
+<?php
+} else{ echo "<script>alert('ID cannot be empty');</script>"; 
+    echo "Try <a href=Login.php> Logging in</a> agian"; }
+?>
 <script src="app.js"></script>    
 
 <footer class="footer" style="position:absolute; bottom:0px; width:77%;">

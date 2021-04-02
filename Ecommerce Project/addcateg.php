@@ -16,12 +16,12 @@
 
 <!DOCTYPE html>
 <body>
-	<?php print_r($_SESSION); ?>
+	<!-- <?php print_r($_SESSION); ?> -->
     <div class="wrapper">
 		<nav id="sidebar" class="sidebar">
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="Dashboard.php">
-          			<span class="align-middle">Ecommerce Demo</span>
+          			<span class="align-middle">Ecommerce Project</span>
         		</a>
 				<ul class="sidebar-nav">
 					<li class="sidebar-header">
@@ -39,7 +39,7 @@
 						</a>
 						<ul id="categ" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
 							<li class="sidebar-item"><a class="sidebar-link" href="addCateg.php">Add Categories</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="editCateg.php">Edit Categories</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="listCateg.php">List Categories</a></li>
 						</ul>
 					</li>
 					
@@ -49,7 +49,7 @@
 						</a>
 						<ul id="prod" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
 							<li class="sidebar-item"><a class="sidebar-link" href="addProd.php">Add Products</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="editProd.php">Edit Products</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="listProd.php">List Products</a></li>
 						</ul>
 					</li>
 

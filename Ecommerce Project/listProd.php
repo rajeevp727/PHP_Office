@@ -4,26 +4,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Products</title>
 
     <link rel="stylesheet" href="app.css">
     <link href="app.css" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+	<!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet"> -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
 </head>
 
 <!DOCTYPE html>
 <body>
-	<?php print_r($_SESSION); ?>
     <?php if(isset($_SESSION['user'])){ ?>
         
     <div class="wrapper">
 		<nav id="sidebar" class="sidebar">
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="Dashboard.php">
-          			<span class="align-middle">Ecommerce Demo</span>
+          			<span class="align-middle">Ecommerce Project</span>
         		</a>
 				<ul class="sidebar-nav">
 					<li class="sidebar-header">
@@ -108,36 +109,72 @@ if($_SERVER["REQUEST_METHOD"] =="POST"){
                     </div>
                     <form method="post">
                                       
-                        <?php if($_SESSION['user'] == "admin"){  echo "<a class=add href=addProd.php style=font-size:16px; background-color:green;>Add Product</a>";   ?>
+                        <?php if($_SESSION['user'] == "admin"){  
+                            echo "<a class=add href=addProd.php style=font-size:16px; background-color:green;>Add Product</a>";   ?>
 
-                        <table  style="border-collapsed:collapsed; width:99%">
-                        <tr>
-                            <th>ID</th>
-                            <th>Product Name</th>
-                            <th>Product Description</th>
-                            <th>Product Price</th>
-                            <th>Actions</th>
-                        </tr>
-                        <?php
+                        <table id="tblProd1" class="table table-striped table-bordered" style="border-collapsed:collapsed; width:100%">
+                        <thead>
+                            <tr>
+                                <th>S. No</th>
+                                <th>ID</th>
+                                <th>Product Name</th>
+                                <th>Product Description</th>
+                                <th>Product Price</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>    
+                        <?php $i=0;
                         $countProdRows = 0;
                         $stmnt_prod = $conn->prepare("SELECT * FROM products order by id ASC");
                         $stmnt_prod->execute();
-                        while($rows=$stmnt_prod->fetch(PDO::FETCH_ASSOC)){
+                        
+                        while($rows = $stmnt_prod->fetch(PDO::FETCH_ASSOC)){ $i++;
                             $countProdRows = count($rows);
-                            if($countProdRows >= 1){
-                            echo "<tr></tr>".
-                                "<td>".$rows['id']."</td>".
-                                "<td>".$rows['prodName']."</td>".
-                                "<td>".$rows['prodDesc']."</td>".
-                                "<td>".$rows['prodPrice']."</td>".
-                                "<td>".
-                                "<a class=add href=editProd.php?$rows[id] style=background-color: cyan;>Edit Product</a>"."<br>".
-                                "<a class=add href=deleteProd.php?$rows[id] style=background-color: red;>Delete Product</a>";
+                            if($countProdRows >= 1){ 
+                            echo "<tbody>".
+                                 "<tr>".
+                                 "<td>".$i."</td>".
+                                 "<td>".$rows['id']."</td>".
+                                 "<td>".$rows['prodName']."</td>".
+                                 "<td>".$rows['prodDesc']."</td>".
+                                 "<td>".$rows['prodPrice']."</td>".
+                                 "<td><a class=add href=editProd.php?id=$rows[id] style=background-color: cyan;>Edit Product</a></td>".
+                                 "<td><a class=add href=deleteProd.php?id=$rows[id] style=background-color: red;>Delete Product</a></td></tr>".
+                                 "</tbody>";
                                 }
                         }?>
                         <?php }
-                        elseif($_SESSION['user'] != "admin"){
-                            echo "<script>alert('Please reqeust your ADMIN to create a NEW Product');</script>"; 
+                        elseif($_SESSION['user'] != "admin"){?> 
+                            <table id="tblProd2" class="table table-striped table-bordered" style="border-collapsed:collapsed; width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product Name</th>
+                                    <th>Product Description</th>
+                                    <th>Product Price</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>    
+                        <?php $j=0;
+                        $countProdRows = 0;
+                        $stmnt_prod = $conn->prepare("SELECT * FROM products order by id ASC");
+                        $stmnt_prod->execute();
+                        while($rows = $stmnt_prod->fetch(PDO::FETCH_ASSOC)){ $j++;
+                            $countProdRows = count($rows);
+                            if($countProdRows >= 1){
+                            echo "<tbody><tr>".
+                                 "<td>".$j."</td>".
+                                 "<td>".$rows['id']."</td>".
+                                 "<td>".$rows['prodName']."</td>".
+                                 "<td>".$rows['prodDesc']."</td>".
+                                 "<td>".$rows['prodPrice']."</td>".
+                                 "<td><a class=add href=editProd.php?id=$rows[id] style=background-color: cyan;>Edit Product</a></td>".
+                                 "<td><a class=add href=deleteProd.php?id=$rows[id] style=background-color: red;>Delete Product</a></td></tr>".
+                                 "</tbody>";
+                                }
+                        }?>
+                           <?php echo "<script>alert('Please reqeust your ADMIN to create a NEW Product');</script>"; 
                         }
                         ?>
                         </table> 
@@ -180,6 +217,18 @@ if($_SERVER["REQUEST_METHOD"] =="POST"){
 </div>
 
 <script src="app.js"></script>
+
+<script>
+    $(document).ready( function() {
+    $('#tblProd1').DataTable();
+    } );
+</script>
+
+<script>
+    $(document).ready( function() {
+    $('#tblProd2').DataTable();
+    } );
+</script>
 
 </body>
 </html>

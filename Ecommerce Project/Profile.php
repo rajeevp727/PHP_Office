@@ -16,12 +16,11 @@
 
 <!DOCTYPE html>
 <body>
-	<?php print_r($_SESSION); ?>
     <div class="wrapper">
 		<nav id="sidebar" class="sidebar">
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="Dashboard.php">
-          			<span class="align-middle">Ecommerce Demo</span>
+          			<span class="align-middle">Ecommerce Project</span>
         		</a>
 				<ul class="sidebar-nav">
 					<li class="sidebar-header">
@@ -72,14 +71,69 @@
 				</ul>
 			</div>
 		</nav>
-		<div class="main">            
-            <div class="container-fluid p-0">
-                <div class="row mb-2 mb-xl-3">
-                    <div class="col-auto d-none d-sm-block">
-                        <h3><?php if(isset($_SESSION['user'])){ echo "User ";?> <strong>"<?php echo $_SESSION['user']; ?></strong>" Profile</h3>
-                    </div>
-                </div>   
-            </div> 
+		<div class="main">  
+			<main class="d-flex w-100">
+				<?php 
+				if(isset($_SESSION['user'])){
+					$username = $_SESSION['user'];
+					$conn = mysqli_connect("localhost", "root", "", "ecommerce");
+				$sql = "SELECT * FROM users WHERE userName='$username'";
+
+				$userDetails = mysqli_query($conn, $sql);
+				$fetchUSers = mysqli_fetch_assoc($userDetails);
+				?>
+					<div class="container d-flex flex-column">
+						<div class="row vh-100">
+							<div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+								<div class="d-table-cell align-middle">
+									<div class="text-center mt-4">
+										<h1 class="h2">User "<?php echo $_SESSION['user']?>" Profile</h1>
+									</div>
+									<div class="card">
+										<div class="card-body">
+											<div class="m-sm-4">
+												<div class="text-center">
+												</div>
+												<form method="post">
+													<div class="mb-3">
+														<!-- <input class="form-control form-control-lg" type="text" name="id" readonly value= <?php // echo $fetchUSers['id']; ?> > -->
+													</div>    
+													<div class="mb-3">
+														<span>First Name</span>
+														<input class="form-control form-control-lg" type="text" name="fName" readonly value= <?php echo $fetchUSers['fName']; ?> >
+													</div>
+													<div class="mb-3">
+													<span>Last Name</span>
+														<input class="form-control form-control-lg" type="text" name="lName" readonly value= <?php echo $fetchUSers['lName']; ?> >
+													</div>
+													<div class="mb-3">
+													<span>Email</span>
+														<input class="form-control form-control-lg" type="text" name="email" readonly value= <?php echo $fetchUSers['email']; ?> >
+													</div>
+													<div class="mb-3">
+													<span>User Name</span>
+														<input class="form-control form-control-lg" type="text" name="userName" readonly value=<?php echo $fetchUSers['userName']; ?> >
+													</div>
+													<div class="mb-3">
+													<span>Password</span>
+														<input class="form-control form-control-lg" type="text" name="pass" readonly value=<?php echo $fetchUSers['password']; ?> >
+													</div>
+													<div class="mb-3">
+													<span>Confirm Password</span>
+														<input class="form-control form-control-lg" type="text" name="confPass" readonly value=<?php echo $fetchUSers['confirmPassword']; ?> >
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				<?php		} else { echo "Invalid User Session, try <a href=Login.php>  Logging in </a> again"; }				?>
+			</main>
+
             <footer class="footer" style="position:absolute; bottom:0px; width:77%;">
 
 				<div class="container-fluid">
@@ -108,12 +162,8 @@
 			        </div>
 			    </div>
             </footer>
-			<?php }
-				else{ echo "Invalid User Session, Try Logging in again";  }
-			?>
-        </div>
-
-        
+			
+        </div>        
     </div>
 	<script src="app.js"></script>
 </body>

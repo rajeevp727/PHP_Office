@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Create Users</title>
+</head>
+<body>
 <?php
  if (session_status() !== PHP_SESSION_ACTIVE) {    session_start();   }
 ?>
@@ -17,8 +23,6 @@
 
 <body>
 	<?php 
-	// print_r($_SESSION); 
-// ------------- Using mYSQLI
 	if(isset($_POST['userCreate'])){ 
 		$conn = mysqli_connect("localhost","root","","ecommerce");
 
@@ -30,7 +34,8 @@
 		$phone = $_POST['phone']; 
 		$address = $_POST['address']; 
 		$status = $_POST['status']; 
-
+		
+		if(!empty($fname) || !empty($lname) || !empty($email) || !empty($fname) )
 		if($pass == $confPass){ 
 		$sql = "INSERT INTO createusers(fName, lName, email, password, phone, address, status) 
  					VALUES ('$fname', '$lname', '$email', '$pass', '$phone', '$address', '$status')";
@@ -40,7 +45,11 @@
 			header("location: Dashboard.php");
 		}else{ echo "<script>alert(Insert Failed);</script>"; }
 	} else{ echo 11,"<script>alert(Password and Confirm Password donot match );</script>"; }
-	mysqli_close($conn);
+	// mysqli_close($conn);
+}
+
+if(isset($_POST['btnCancel'])){
+	header("location: dashboard.php");
 }
 	?>
     <div class="wrapper">
@@ -97,47 +106,66 @@
 				</ul>
 			</div>
 		</nav>
-		<div class="main">   
+		<div class="main">    
 		<main class="d-flex w-100"> 
 			<div class="container d-flex flex-column">
-								<h3><?php if(isset($_SESSION['user'])){ echo "User";  }
+			<h3><?php if(isset($_SESSION['user'])){ echo "User";  }
 						else{ echo ("Invalid User Session, try <a href=Login.php>  Logging in</a>"); } ?>
 								<strong><?php if(isset($_SESSION['user'])){ echo $_SESSION['user'];  ?>
-								</strong> Dashboard</h3>
+								</strong> Add Users</h3>
 								<?php } else { echo ""; } ?>
 						<div class="d-table-cell align-middle">
-							<?php 
-							if(isset($_SESSION['user'])){
-								$conn = mysqli_connect("localhost", "root", "", "ecommerce");
-								$sql = "SELECT * FROM createusers ORDER BY id DESC";
+							<?php	if(isset($_SESSION['user']) == "admin"){ 
+								
+							$username= $_SESSION['user'];
+							$conn = mysqli_connect("localhost", "root", "", "ecommerce");
+							$sql = "SELECT * FROM createusers ORDER BY id DESC";
 
-								$getUsers = mysqli_query($conn, $sql);
-								$users = mysqli_fetch_assoc($getUsers);								
+							$getUsers = mysqli_query($conn, $sql);
+							$users = mysqli_fetch_assoc($getUsers);								
 							?>
 								<div class="text-center mt-4">
 								</div>
 								<div class="card">
 									<div class="card-body">
 										<div class="m-sm-4">
-											<div class="text-center"></div>
-											<?php if(isset($_POST['addUsers'])){
-												if($_SESSION['user'] == "admin"){ header("location: createUsers.php"); }
-												else{ echo "only ADMIN can create NEW Users"; }
-											}
-											if(isset($_POST['viewUsers'])){ 
-												if($_SESSION['user'] =="admin"){ header("location: viewUsers.php");} 
-												else{ echo "only ADMIN can view the Users he created"; }
-												}?>
-											<form method="post" style="text-align:center;">
-												<div class="text-center mt-3">
-												<button type="submit" class="btn btn-lg btn-primary" name="addUsers">Add Users</button>
-												<button type="submit" class="btn btn-lg btn-primary" name="viewUsers">View Users</button>
-											</form>
+											<div class="text-center">
+								</div>
+									<form action="" method="post">
+										<h3>Here you can create new Users</h3>
+										<div class="mb-3">
+											<input class="form-control form-control-lg" type="text" name="fName" placeholder="Enter First Name" autofocus  >
+										</div><div class="mb-3">
+											<input class="form-control form-control-lg" type="text" name="lName" placeholder="Enetr Last Name"  >
+										</div><div class="mb-3">
+											<input class="form-control form-control-lg" type="text" name="email" placeholder="Enetr Email"  onBlur="ValidateEmail(this);">
+										</div><div class="mb-3">
+											<input class="form-control form-control-lg" type="text" name="pass" placeholder="Enetr Password">
+										</div><div class="mb-3">
+											<input class="form-control form-control-lg" type="text" name="confPass" placeholder="Enter Confirm Password" >
+										</div><div class="mb-3">
+											<input class="form-control form-control-lg" type="number" length=10 name="phone" placeholder="Enter Phone Number"  >
+										</div><div class="mb-3">
+											<textarea class="form-control form-control-lg" name="address" rows=5  placeholder="Enetr Address"  ></textarea>
+										</div><div class="mb-3">
+											<select calss="form-control form-control-ig" name="status" style="width:100%;">
+												<option value="Active">Active</option>
+												<option value="inActive">inActive</option>
+											</select>
+										</div>
+										<div class="text-center mt-3">
+											<button type="submit" class="btn btn-lg btn-primary" name="userCreate">Create User</button>
+											<button type="submit" class="btn btn-lg btn-primary" name="btnCancel">Cancel</button>
+										</div>
+										<div class="text-center mt-3">
+											
+										</div>
+									</form>
 										</div>
 										</div>
 									</div>
 								</div>
-								<?php	}else{ echo ""; }	?>
+						<?php	} else{  echo "<script>alert('Only ADMIN can create new users');</script>";}	?>
 			</div>
 		</main>
 			<footer class="footer" style="position:absolute; bottom:0px; width:77%;">
@@ -168,7 +196,22 @@
 			    </div>
         </footer>
         </div>
-	<script src="app.js"></script>
 
+       
+
+    </div>
+	<script src="app.js"></script>
+<script>
+	function ValidateEmail(email){
+		pattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+		if(pattern.test(email.value) == false){
+			alert("Invalid Emial Format");
+			return false;
+		}
+		return true;
+	}
+</script>
+</body>
+</html>
 </body>
 </html>

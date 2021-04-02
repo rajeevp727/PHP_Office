@@ -4,45 +4,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Create NEW users</title>
+    <title>View users</title>
     <link rel="stylesheet" href="app.css">
 	<link href="app.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 
-	
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
- <!-- for Data Table using JQUERY-->
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
 
 <body>
-	<?php 
-	// print_r($_SESSION); 
-// ------------- Using mYSQLI
-	if(isset($_POST['userCreate'])){ 
-		$conn = mysqli_connect("localhost","root","","ecommerce");
-
-		$fname =$_POST['fName']; 
-		$lname = $_POST['lName'];
-		$email = $_POST['email'];
-		$pass = $_POST['pass'];
-		$confPass= $_POST['confPass']; 
-		$phone = $_POST['phone']; 
-		$address = $_POST['address']; 
-		$status = $_POST['status']; 
-
-		if($pass == $confPass){ 
-		$sql = "INSERT INTO createusers(fName, lName, email, password, phone, address, status) 
- 					VALUES ('$fname', '$lname', '$email', '$pass', '$phone', '$address', '$status')";
-		$craeteUSers = mysqli_query($conn, $sql); 
-		echo "<script>alert(Insert Failed);</script>";
-		if($craeteUSers){ 
-			header("location: Dashboard.php");
-		}else{ echo "<script>alert(Insert Failed);</script>"; }
-	} else{ echo 11,"<script>alert(Password and Confirm Password donot match );</script>"; }
-	mysqli_close($conn);
-}
-	?>
     <div class="wrapper">
 		<nav id="sidebar" class="sidebar">
 			<div class="sidebar-content js-simplebar">
@@ -97,22 +71,30 @@
 				</ul>
 			</div>
 		</nav>
-		<div class="main">   
+		<div class="main">    
+		<?php
+		if(isset($_POST['btnCancel'])){
+			header("location: Dashboard.php");
+		}
+		?>
 		<main class="d-flex w-100"> 
 			<div class="container d-flex flex-column">
-								<h3><?php if(isset($_SESSION['user'])){ echo "User";  }
+
+			<h3><?php if(isset($_SESSION['user'])){ echo "User";  }
 						else{ echo ("Invalid User Session, try <a href=Login.php>  Logging in</a>"); } ?>
 								<strong><?php if(isset($_SESSION['user'])){ echo $_SESSION['user'];  ?>
-								</strong> Dashboard</h3>
+								</strong> View</h3>
 								<?php } else { echo ""; } ?>
-						<div class="d-table-cell align-middle">
-							<?php 
-							if(isset($_SESSION['user'])){
-								$conn = mysqli_connect("localhost", "root", "", "ecommerce");
-								$sql = "SELECT * FROM createusers ORDER BY id DESC";
 
-								$getUsers = mysqli_query($conn, $sql);
-								$users = mysqli_fetch_assoc($getUsers);								
+			
+						<div class="d-table-cell align-middle">
+							<?php	if($_SESSION['user'] == "admin"){ 
+								
+							$username= $_SESSION['user'];
+							$conn = mysqli_connect("localhost", "root", "", "ecommerce");
+							$sql = "SELECT * FROM createusers ORDER BY id DESC";
+
+							$getUsers = mysqli_query($conn, $sql);
 							?>
 								<div class="text-center mt-4">
 								</div>
@@ -120,24 +102,66 @@
 									<div class="card-body">
 										<div class="m-sm-4">
 											<div class="text-center"></div>
-											<?php if(isset($_POST['addUsers'])){
-												if($_SESSION['user'] == "admin"){ header("location: createUsers.php"); }
-												else{ echo "only ADMIN can create NEW Users"; }
-											}
-											if(isset($_POST['viewUsers'])){ 
-												if($_SESSION['user'] =="admin"){ header("location: viewUsers.php");} 
-												else{ echo "only ADMIN can view the Users he created"; }
-												}?>
-											<form method="post" style="text-align:center;">
-												<div class="text-center mt-3">
-												<button type="submit" class="btn btn-lg btn-primary" name="addUsers">Add Users</button>
-												<button type="submit" class="btn btn-lg btn-primary" name="viewUsers">View Users</button>
-											</form>
+									<form action="" method="post">
+										<div class="mb-3">
+											<h3>View</h3>
+											<table id="showUsers" class="display" style="width:100%">
+												<thead>
+													<tr>
+														<th>ID</th>
+														<th>First Name</th>
+														<th>Last Name</th>
+														<th>Email</th>
+														<th>Password</th>
+														<th>Phone</th>
+														<th>Address</th>
+														<th>Status</th>
+													</tr>
+												</thead>
+												<tbody>
+
+													<?php  
+													$i=0;
+													while($rows = mysqli_fetch_assoc($getUsers)) { 
+														$i++ ?>
+													<tr>
+														<td>
+															<?php echo $i; ?>	
+														</td>
+														<td>
+															<?php echo $rows['fName']; ?>	
+														</td>
+														<td>
+															<?php echo $rows['lName']; ?>	
+														</td>
+														<td>
+															<?php echo $rows['email']; ?>	
+														</td>
+														<td>
+															<?php echo $rows['password']; ?>	
+														</td>
+														<td>
+															<?php echo $rows['phone']; ?>	
+														</td>
+														<td>
+															<?php echo $rows['address']; ?>	
+														</td>
+														<td>
+															<?php echo $rows['status']; ?>	
+														</td>
+													</tr>
+													<?php } ?>
+												</tbody>
+											</table>
+										</div>
+										<div class="text-center mt-3">
+											<button type="submit" class="btn btn-lg btn-primary" name="btnCancel">Go to dashboard</button>
+									</form>
 										</div>
 										</div>
 									</div>
 								</div>
-								<?php	}else{ echo ""; }	?>
+						<?php	} else{  echo "Only ADMIN can create new users";}	?>
 			</div>
 		</main>
 			<footer class="footer" style="position:absolute; bottom:0px; width:77%;">
@@ -168,7 +192,14 @@
 			    </div>
         </footer>
         </div>
+    </div>
 	<script src="app.js"></script>
 
+
+    <script>
+    $(document).ready(function() {
+        $('#showUsers').DataTable();
+    });
+    </script>
 </body>
 </html>
