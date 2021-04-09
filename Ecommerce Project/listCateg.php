@@ -134,7 +134,7 @@ if($_SERVER["REQUEST_METHOD"] =="POST"){
                                 <th>Category Name</th>
                                 <th>Category Description</th>
                                 <th>Prducts in this category</th>
-                                <th colspan=2 style="text-align:center;">Actions</th>
+                                <th style="text-align:center;">Actions</th>
                             </tr>
                         </thead>
 
@@ -163,29 +163,7 @@ if($_SERVER["REQUEST_METHOD"] =="POST"){
 
                         
                         </tbody>
-                        <?php
-                        // $countCategRows=0;
-                        // $stmnt_categ = $conn->prepare("SELECT * FROM categories order by id DESC");
-                        // $stmnt_categ->execute();
-                        //     $i = 1;
-                        // while($rows=$stmnt_categ->fetch(PDO::FETCH_ASSOC)){
-                        // $countCategRows = count($rows);
-                        // if($countCategRows>=1){
-                        //     echo "<tbody>".
-                        //          "<tr>".
-                        //          "<td>".$i."</td>".
-                        //          "<td>".$rows['categName']."</td>".
-                        //          "<td>".$rows['categDesc']."</td>".
-                                
-                        //         // LIST Of Products in this category
-                        //          "<td>"."Products in <a href = fetchProducts.php?categ=$rows[categName]>".$rows['categName']."</a></td>".
-                        //          "<td><a class=edit href=editCateg.php?id=$rows[id] style=background-color: cyan;>Edit Category</a></td>".
-                        //          "<td><a class=delete href=deleteCateg.php?id=$rows[id] style=background-color: red;>Delete Category</a></td></tr>".
-                        //          "</tbody>";
-                        // } -->
-                        // $i++;
-                        ?>
-                        </table>  
+                      </table>  
                     </form>
                 </div>
             </div>
