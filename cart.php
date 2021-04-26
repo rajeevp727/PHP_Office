@@ -11,7 +11,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			else{
 				$count = count($_SESSION['cart']); 
 				$_SESSION['cart'][$count]= array('productImage'=>$_POST['productImage'], 'productName'=>$_POST['productName'], 'WebID'=>$_POST['webID'], 'prodPrice'=>$_POST['productPrice'], 	'prodQuantity'=>$_POST['productQuantity']);	
-				echo "<script>alert('Item added to cart'); window.locationhref='product-details.php'</script>";
+				echo "<script>alert('Item added to cart'); window.location.href='product-details.php'</script>";
 			}
 			// print_r($_SESSION['cart']);
 		}else{
@@ -24,7 +24,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			if($v['productName'] == $_POST['productName']){
 				unset($_SESSION['cart'][$k]);
 				$_SESSION['cart'] = array_values($_SESSION['cart']);
-				echo "<script>alert('Item Removed'); window.loation.href='mycart.php'</script>";
+				echo "<script>alert('Item Removed'); window.location.href='mycart.php'</script>";
 			}
 		}
 	}
